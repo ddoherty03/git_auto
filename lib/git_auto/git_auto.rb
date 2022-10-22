@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Class to encapsulate git operations on directories specified in the
+# initializer.
 class GitAuto
   attr_accessor :run_stat
   attr_reader :dirs
