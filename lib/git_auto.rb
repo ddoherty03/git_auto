@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "git_auto/version"
+require 'open3'
+require 'logger'
+require 'date'
+require 'active_support/multibyte'
+require 'fileutils'
 
-module GitAuto
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative "git_auto/version"
+require_relative "git_auto/string"
+require_relative "git_auto/git_auto"
