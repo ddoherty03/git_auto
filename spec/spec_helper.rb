@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'pry'
+require 'debug'
+
 require "git_auto"
 
 RSpec.configure do |config|
