@@ -13,12 +13,15 @@ class GitAuto
   end
 
   def getenv
-    env_files = [File.expand_path("~/.keychain/#{ENV['HOSTNAME']}-sh"),
-                 File.expand_path("~/.keychain/#{ENV['HOSTNAME']}-sh-gpg")]
+    env_paths = ENV['GIT_AUTO_ENV_PATH']&.split(':') ||
+                ["~/.keychain/#{ENV['HOSTNAME']}-sh",
+                 "~/.keychain/#{ENV['HOSTNAME']}-sh-gpg"]
+    env_files = env_paths.map { |p| File.expand_path(p) }
     result = ENV.clone
     env_files.each do |fname|
-      if File.readable?(fname)
-        File.open(fname) do |f|
+      next unless File.readable?(fname)
+
+      File.open(fname) do |f|
           f.each_line do |line|
             next unless line =~ /^\s*(SSH|GPG)/
 
@@ -28,7 +31,6 @@ class GitAuto
               result[kv[0].to_s] = kv[1].to_s
             end
           end
-        end
       end
     end
     result
@@ -96,7 +98,7 @@ class GitAuto
 
   def run
     # Set up the logger
-    log_name = '~/log/git-auto.log'
+    log_name = ENV['GIT_AUTO_LOG'] || '~/log/git_auto.log'
     log_name = File.expand_path(log_name)
     log_dir = File.dirname(log_name)
     FileUtils.mkdir_p(log_dir)
