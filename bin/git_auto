@@ -6,4 +6,4 @@
 
 require 'git_auto'
 
-GitAuto.new(ARGV).run
+GitAuto.new(*ARGV).run

@@ -6,9 +6,9 @@ class GitAuto
   attr_accessor :run_stat
   attr_reader :dirs
 
-  def initialize(dirs)
-    @dirs = dirs.select { |d| File.directory?(d) }
-              .map { |d| File.expand_path(d) }
+  def initialize(*indirs)
+    @dirs = indirs.map { |d| File.expand_path(d) }
+              .select { |d| File.directory?(d) }
     @run_stat = nil
   end
 
