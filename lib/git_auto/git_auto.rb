@@ -17,7 +17,7 @@ class GitAuto
                 ["~/.keychain/#{ENV['HOSTNAME']}-sh",
                  "~/.keychain/#{ENV['HOSTNAME']}-sh-gpg"]
     env_files = env_paths.map { |p| File.expand_path(p) }
-    result = ENV.clone
+    result = ENV.to_hash
     env_files.each do |fname|
       next unless File.readable?(fname)
 

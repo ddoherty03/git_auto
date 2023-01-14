@@ -1,0 +1,2 @@
+GPG_AGENT_INFO=/run/user/1777/gnupg/S.gpg-agent
+SSH_AUTH_SOCK=/run/user/1777/gnupg/S.gpg-agent.ssh;
