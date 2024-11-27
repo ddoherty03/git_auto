@@ -3,6 +3,7 @@ PATH
   specs:
     git_auto (0.1.0)
       activesupport
+      rspec
 
 GEM
   remote: https://rubygems.org/
