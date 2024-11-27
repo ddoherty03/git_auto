@@ -34,11 +34,4 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
   spec.add_dependency "activesupport"
-  spec.add_dependency "rspec"
-
-  # For more information and examples about making a new gem, check out our
-  # guide at: https://bundler.io/guides/creating_gem.html
-  spec.add_development_dependency "debug"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "pry-byebug"
 end
