@@ -14,23 +14,25 @@ class GitAuto
 
   def getenv
     env_paths = ENV['GIT_AUTO_ENV_PATH']&.split(':') ||
-                ["~/.keychain/#{ENV['HOSTNAME']}-sh",
-                 "~/.keychain/#{ENV['HOSTNAME']}-sh-gpg"]
+                [
+                  "~/.keychain/#{ENV['HOSTNAME']}-sh",
+                  "~/.keychain/#{ENV['HOSTNAME']}-sh-gpg"
+                ]
     env_files = env_paths.map { |p| File.expand_path(p) }
     result = ENV.to_hash
     env_files.each do |fname|
       next unless File.readable?(fname)
 
       File.open(fname) do |f|
-          f.each_line do |line|
-            next unless line =~ /^\s*(SSH|GPG)/
+        f.each_line do |line|
+          next unless /^\s*(SSH|GPG)/.match?(line)
 
-            cmd = line.split(';').grep(/=/).first
-            kv = cmd.split('=')
-            if kv.size == 2
-              result[kv[0].to_s] = kv[1].to_s
-            end
+          cmd = line.split(';').grep(/=/).first
+          kv = cmd.split('=')
+          if kv.size == 2
+            result[kv[0].to_s] = kv[1].to_s
           end
+        end
       end
     end
     result
@@ -41,7 +43,7 @@ class GitAuto
   # resulting status from running the command for access by the caller.
   def run_and_log(cmd, logger = nil)
     env = getenv
-    logger ||= Logger.new(STDERR)
+    logger ||= Logger.new($stderr)
     logger.info "Running: '#{cmd}'"
     stdout_str, stderr_str, status = Open3.capture3(env, cmd)
     self.run_stat = status
@@ -67,7 +69,7 @@ class GitAuto
   # Return true if there have been any changes in the current directory since
   # the last git commit.
   def git_changes?(logger = nil)
-    # Note: git-diff returns 0 if no changes, 1 if changes, and 2 if there was
+    # NOTE: git-diff returns 0 if no changes, 1 if changes, and 2 if there was
     # an error.  Thus, run_and_log will falsely report that there was an error
     # if there are changes, so beware.
     run_and_log('git diff --exit-code', logger)
@@ -104,7 +106,7 @@ class GitAuto
     FileUtils.mkdir_p(log_dir)
 
     logger = Logger.new(log_name, 'monthly')
-    logger ||= Logger.new(STDERR)
+    logger ||= Logger.new($stderr)
 
     dirs.each do |dir|
       now = DateTime.now
